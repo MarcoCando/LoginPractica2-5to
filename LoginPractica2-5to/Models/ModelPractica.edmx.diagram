@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+ <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <!-- Diagram content (shape and connector positions) -->
+    <edmx:Diagrams>
+      <Diagram DiagramId="207a24395853487e88fdab63d106b412" Name="Diagram1">
+        <EntityTypeShape EntityType="PL_PracticaModel.sysdiagrams" Width="1.5" PointX="8.75" PointY="1.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="PL_PracticaModel.TBL_DEPARTAMENTO" Width="1.5" PointX="0.75" PointY="5" IsExpanded="true" />
+        <EntityTypeShape EntityType="PL_PracticaModel.TBL_ESTADO" Width="1.5" PointX="3" PointY="0.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="PL_PracticaModel.TBL_INCIDENTE" Width="1.5" PointX="5.25" PointY="4" IsExpanded="true" />
+        <EntityTypeShape EntityType="PL_PracticaModel.TBL_OBSERVACION" Width="1.5" PointX="7.5" PointY="8.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="PL_PracticaModel.TBL_PERSONA" Width="1.5" PointX="3" PointY="4.25" IsExpanded="true" />
+        <EntityTypeShape EntityType="PL_PracticaModel.TBL_PRIORIDAD" Width="1.5" PointX="3" PointY="9.5" IsExpanded="true" />
+        <EntityTypeShape EntityType="PL_PracticaModel.TBL_ROL" Width="1.5" PointX="6" PointY="1.125" IsExpanded="true" />
+        <EntityTypeShape EntityType="PL_PracticaModel.TBL_USUARIO" Width="1.5" PointX="8.25" PointY="4.625" IsExpanded="true" />
+        <AssociationConnector Association="PL_PracticaModel.FK_TBL_PERSONA_TBL_DEPARTAMENTO" ManuallyRouted="false" />
+        <AssociationConnector Association="PL_PracticaModel.FK_TBL_INCIDENTE_TBL_ESTADO" ManuallyRouted="false" />
+        <AssociationConnector Association="PL_PracticaModel.FK_TBL_INCIDENTE_TBL_PERSONA" ManuallyRouted="false" />
+        <AssociationConnector Association="PL_PracticaModel.FK_TBL_INCIDENTE_TBL_PRIORIDAD" ManuallyRouted="false" />
+        <AssociationConnector Association="PL_PracticaModel.FK_TBL_OBSERVACION_TBL_INCIDENTE" ManuallyRouted="false" />
+        <AssociationConnector Association="PL_PracticaModel.FK_TBL_OBSERVACION_TBL_INCIDENTE1" ManuallyRouted="false" />
+        <AssociationConnector Association="PL_PracticaModel.FK_TBL_USUARIO_TBL_PERSONA" ManuallyRouted="false" />
+        <AssociationConnector Association="PL_PracticaModel.FK_TBL_USUARIO_TBL_ROL" ManuallyRouted="false" />
+      </Diagram>
+    </edmx:Diagrams>
+  </edmx:Designer>
+</edmx:Edmx>
