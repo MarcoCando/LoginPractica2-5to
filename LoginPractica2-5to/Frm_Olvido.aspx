@@ -1,57 +1,53 @@
 ﻿<%@ Page Title="" Language="C#" MasterPageFile="~/Login.Master" AutoEventWireup="true" CodeBehind="Frm_Olvido.aspx.cs" Inherits="LoginPractica2_5to.Frm_Olvido" %>
+
 <asp:Content ID="Content1" ContentPlaceHolderID="head" runat="server">
 </asp:Content>
 <asp:Content ID="Content2" ContentPlaceHolderID="ContentPlaceHolder1" runat="server">
-        <ContentTemplate>
+    <contenttemplate>
 
-    <div class="container">
+        <div class="container">
 
-        <div class="row justify-content-center">
+            <div class="row justify-content-center">
 
-            <div class="col-xl-10 col-lg-12 col-md-9">
+                <div class="col-xl-10 col-lg-12 col-md-9">
 
-                <div class="card o-hidden border-0 shadow-lg my-5">
-                    <div class="card-body p-0">
-                        <!-- Nested Row within Card Body -->
-                        <div class="row">
-                            <div class="col-lg-6 d-none d-lg-block bg-login-image"></div>
-                            <div class="col-lg-6">
-                                <div class="p-5">
-                                    <div class="text-center">
-                                        <h1 class="h4 text-gray-900 mb-2">Forgot Your Password?</h1>
-                                        <p class="mb-4">We get it, stuff happens. Just enter your email address below
-                                            and we'll send you a link to reset your password!</p>
-                                    </div>
-                                    <form class="user">
-                                        <div class="form-group">
-                                            <input type="email" class="form-control form-control-user"
-                                                id="exampleInputEmail" aria-describedby="emailHelp"
-                                                placeholder="Enter Email Address...">
+                    <div class="card o-hidden border-0 shadow-lg my-5">
+                        <div class="card-body p-0">
+                            <div class="row">
+                                <div class="col-lg-6 d-none d-lg-block bg-login-image"></div>
+                                <div class="col-lg-6">
+                                    <div class="p-5">
+                                        <div class="text-center">
+                                            <h1 class="h4 text-gray-900 mb-2">Olvidaste tu Contraseña</h1>
+                                            <p class="mb-4">Ingresa porfavor tu Correo Electrónico!</p>
                                         </div>
-                                        <a href="login.html" class="btn btn-primary btn-user btn-block">
-                                            Reset Password
-                                        </a>
-                                    </form>
-                                    <hr>
-                                    <div class="text-center">
-                                        <a class="small" href="register.html">Create an Account!</a>
-                                    </div>
-                                    <div class="text-center">
-                                        <a class="small" href="login.html">Already have an account? Login!</a>
+                                        <form class="user">
+                                            <div class="form-group">
+                                                <asp:TextBox ID="txt_email" type="email" runat="server" CssClass="form-control form-control-user" placeholder="Ingrese su Email"></asp:TextBox>
+                                                
+                                            </div>
+                                             <div class="form-group">
+                                                <asp:TextBox ID="txt_usu" type="text" runat="server" CssClass="form-control form-control-user" placeholder="Ingrese su Usuario"></asp:TextBox>
+                                                
+                                            </div>
+
+                                            <asp:Button ID="Button1" CssClass="btn btn-facebook" runat="server" Text="Enviar Correo" OnClick="Button1_Click" />
+                                        </form>
+                                        <hr>
                                     </div>
                                 </div>
                             </div>
                         </div>
                     </div>
+
                 </div>
 
             </div>
 
+
         </div>
 
-    </div>
 
-
-                </ContentTemplate>
+    </contenttemplate>
 
 </asp:Content>

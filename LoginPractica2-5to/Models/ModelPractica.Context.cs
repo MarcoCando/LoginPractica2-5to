@@ -12,6 +12,8 @@ namespace LoginPractica2_5to.Models
     using System;
     using System.Data.Entity;
     using System.Data.Entity.Infrastructure;
+    using System.Data.Entity.Core.Objects;
+    using System.Linq;
     
     public partial class PL_PracticaEntities1 : DbContext
     {
@@ -34,5 +36,32 @@ namespace LoginPractica2_5to.Models
         public virtual DbSet<TBL_PRIORIDAD> TBL_PRIORIDAD { get; set; }
         public virtual DbSet<TBL_ROL> TBL_ROL { get; set; }
         public virtual DbSet<TBL_USUARIO> TBL_USUARIO { get; set; }
+    
+        public virtual ObjectResult<string> Sp_Correo(string usuario)
+        {
+            var usuarioParameter = usuario != null ?
+                new ObjectParameter("usuario", usuario) :
+                new ObjectParameter("usuario", typeof(string));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<string>("Sp_Correo", usuarioParameter);
+        }
+    
+        public virtual ObjectResult<TBL_USUARIO> Obtener_Claves(string usuario)
+        {
+            var usuarioParameter = usuario != null ?
+                new ObjectParameter("usuario", usuario) :
+                new ObjectParameter("usuario", typeof(string));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<TBL_USUARIO>("Obtener_Claves", usuarioParameter);
+        }
+    
+        public virtual ObjectResult<TBL_USUARIO> Obtener_Claves(string usuario, MergeOption mergeOption)
+        {
+            var usuarioParameter = usuario != null ?
+                new ObjectParameter("usuario", usuario) :
+                new ObjectParameter("usuario", typeof(string));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<TBL_USUARIO>("Obtener_Claves", mergeOption, usuarioParameter);
+        }
     }
 }

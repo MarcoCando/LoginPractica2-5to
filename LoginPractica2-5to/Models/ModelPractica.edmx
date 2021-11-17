@@ -4,7 +4,7 @@
   <edmx:Runtime>
     <!-- SSDL content -->
     <edmx:StorageModels>
-      <Schema Namespace="PL_PracticaModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+    <Schema Namespace="PL_PracticaModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
         <EntityType Name="sysdiagrams">
           <Key>
             <PropertyRef Name="diagram_id" />
@@ -205,6 +205,9 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Function Name="Sp_Correo" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="usuario" Type="varchar" Mode="In" />
+        </Function>
         <EntityContainer Name="PL_PracticaModelStoreContainer">
           <EntitySet Name="sysdiagrams" EntityType="Self.sysdiagrams" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="TBL_DEPARTAMENTO" EntityType="Self.TBL_DEPARTAMENTO" Schema="dbo" store:Type="Tables" />
@@ -248,8 +251,7 @@
             <End Role="TBL_USUARIO" EntitySet="TBL_USUARIO" />
           </AssociationSet>
         </EntityContainer>
-      </Schema>
-    </edmx:StorageModels>
+      </Schema></edmx:StorageModels>
     <!-- CSDL content -->
     <edmx:ConceptualModels>
       <Schema Namespace="PL_PracticaModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
@@ -511,6 +513,12 @@
             <End Role="TBL_ROL" EntitySet="TBL_ROL" />
             <End Role="TBL_USUARIO" EntitySet="TBL_USUARIO" />
           </AssociationSet>
+          <FunctionImport Name="Sp_Correo" ReturnType="Collection(String)">
+            <Parameter Name="usuario" Mode="In" Type="String" />
+          </FunctionImport>
+          <FunctionImport Name="Obtener_Claves" EntitySet="TBL_USUARIO" ReturnType="Collection(PL_PracticaModel.TBL_USUARIO)">
+            <Parameter Name="usuario" Mode="In" Type="String" />
+          </FunctionImport>
         </EntityContainer>
       </Schema>
     </edmx:ConceptualModels>
@@ -631,6 +639,8 @@
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
+          <FunctionImportMapping FunctionImportName="Sp_Correo" FunctionName="PL_PracticaModel.Store.Sp_Correo" />
+          <FunctionImportMapping FunctionImportName="Obtener_Claves" FunctionName="PL_PracticaModel.Store.Sp_Correo" />
         </EntityContainerMapping>
       </Mapping>
     </edmx:Mappings>

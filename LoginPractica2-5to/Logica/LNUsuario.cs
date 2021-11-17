@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Data.Entity;
+using System.Data.SqlClient;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Web;
@@ -18,7 +19,7 @@ namespace LoginPractica2_5to.Logica
             try
             {
                 return await dc.TBL_USUARIO.Where(data => data.usu_status == "A").ToListAsync();
-  
+
             }
             catch (Exception ex)
             {
@@ -32,7 +33,7 @@ namespace LoginPractica2_5to.Logica
         {
             try
             {
-                var res=dc.TBL_USUARIO.Where(data => data.usu_status == "A");
+                var res = dc.TBL_USUARIO.Where(data => data.usu_status == "A");
                 return res.ToList();
 
             }
@@ -60,6 +61,23 @@ namespace LoginPractica2_5to.Logica
             }
 
         }
+        public static async Task<TBL_USUARIO> getPass(string clave)
+        {
+            try
+            {
+                return await dc.TBL_USUARIO.Where(data => data.usu_status == "A"
+                && data.usu_password.Equals(clave)).FirstOrDefaultAsync();
+
+            }
+            catch (Exception ex)
+            {
+
+                throw new ArgumentException("Error al Obtener Usuarios");
+            }
+
+        }
+
+
 
     }
 }

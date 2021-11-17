@@ -15,11 +15,13 @@ namespace LoginPractica2_5to
         {
 
         }
+        private int intentos = 0;
 
         protected void btnIngresar_Click(object sender, EventArgs e)
         {
             try
             {
+
                 string usuario = txt_usu.Text.TrimStart().TrimEnd();
                 string clave = txt_pass.Text;
 
@@ -31,7 +33,7 @@ namespace LoginPractica2_5to
                     taskUserLogin.Wait();
                     dataUsuario = taskUserLogin.Result;
 
-                    if (dataUsuario!=null)
+                    if (dataUsuario != null)
                     {
                         Response.Redirect("~/Frm_Inicio.aspx");
                         ClientScript.RegisterStartupScript(this.GetType(), "mensaje", "<script> Swal.fire('Buen Trabajo', 'Bienvenido','success')</script>");
@@ -39,6 +41,16 @@ namespace LoginPractica2_5to
                     }
                     else
                     {
+                        //if (intentos == 3)
+                        //{
+                        //    txt_usu.Text = "";
+                        //    txt_pass.Text = "";
+                        //    intentos++;
+
+                        //    ClientScript.RegisterStartupScript(this.GetType(), "mensaje", "<script> Swal.fire('Error', 'SOBREPASO EL LIMITE','error')</script>");
+                        //    btnIngresar.Visible = false;
+                        //    btnOlvido.Visible = true;
+                        //}
                         ClientScript.RegisterStartupScript(this.GetType(), "mensaje", "<script> Swal.fire('Error', 'Usuario o Contraseña Incorrecta','error')</script>");
 
                     }
@@ -46,9 +58,10 @@ namespace LoginPractica2_5to
                 }
                 else
                 {
-                    ClientScript.RegisterStartupScript(this.GetType(), "mensaje", "<script> Swal.fire('Error', 'Usuario o Contraseña Incorrecta','error')</script>");
+                    ClientScript.RegisterStartupScript(this.GetType(), "mensaje", "<script> Swal.fire('Error', 'Ingrese Datos','info')</script>");
 
                 }
+
 
             }
             catch (Exception ex)
@@ -60,6 +73,7 @@ namespace LoginPractica2_5to
 
         protected void btnOlvido_Click(object sender, EventArgs e)
         {
+            Response.Redirect("~/Frm_Olvido.aspx");
 
         }
     }
