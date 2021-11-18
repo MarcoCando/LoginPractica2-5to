@@ -23,7 +23,7 @@
                                         </div>
                                         <form class="user">
                                             <div class="form-group">
-                                                <asp:TextBox ID="txt_email" type="email" runat="server" CssClass="form-control form-control-user" placeholder="Ingrese su Email"></asp:TextBox>
+                                                <asp:TextBox ID="txt_email" type="email" runat="server" Visible="false" CssClass="form-control form-control-user"  placeholder="Ingrese su Email"></asp:TextBox>
                                                 
                                             </div>
                                              <div class="form-group">

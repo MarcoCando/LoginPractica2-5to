@@ -103,11 +103,12 @@
           <Property Name="usu_id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="rol_id" Type="int" Nullable="false" />
           <Property Name="usu_login" Type="varchar" MaxLength="100" Nullable="false" />
-          <Property Name="usu_password" Type="varchar" MaxLength="100" Nullable="false" />
           <Property Name="usu_email" Type="varchar" MaxLength="100" Nullable="false" />
           <Property Name="usu_add" Type="datetime" Nullable="false" />
           <Property Name="usu_status" Type="char" MaxLength="1" Nullable="false" />
           <Property Name="per_id" Type="int" Nullable="false" />
+          <Property Name="intentos" Type="int" />
+          <Property Name="usu_pass" Type="varbinary" MaxLength="150" />
         </EntityType>
         <Association Name="FK_TBL_INCIDENTE_TBL_ESTADO">
           <End Role="TBL_ESTADO" Type="Self.TBL_ESTADO" Multiplicity="1" />
@@ -205,8 +206,24 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Function Name="desencriptar_pass" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="true" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo" ReturnType="varchar">
+          <Parameter Name="clave" Type="varbinary" Mode="In" />
+        </Function>
+        <Function Name="ENCRIPTA_PASS" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="true" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo" ReturnType="varbinary">
+          <Parameter Name="clave" Type="varchar" Mode="In" />
+        </Function>
         <Function Name="Sp_Correo" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
           <Parameter Name="usuario" Type="varchar" Mode="In" />
+        </Function>
+        <Function Name="Sp_EnviarCorreo" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="usuario" Type="varchar" Mode="In" />
+        </Function>
+        <Function Name="SpDesencriptar" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="passw" Type="varchar" Mode="In" />
+          <Parameter Name="nom" Type="varchar" Mode="In" />
+        </Function>
+        <Function Name="SpObtenerCorreo" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="usu" Type="varchar" Mode="In" />
         </Function>
         <EntityContainer Name="PL_PracticaModelStoreContainer">
           <EntitySet Name="sysdiagrams" EntityType="Self.sysdiagrams" Schema="dbo" store:Type="Tables" />
@@ -338,7 +355,7 @@
           <Property Name="dep_id" Type="Int32" Nullable="false" />
           <NavigationProperty Name="TBL_DEPARTAMENTO" Relationship="Self.FK_TBL_PERSONA_TBL_DEPARTAMENTO" FromRole="TBL_PERSONA" ToRole="TBL_DEPARTAMENTO" />
           <NavigationProperty Name="TBL_INCIDENTE" Relationship="Self.FK_TBL_INCIDENTE_TBL_PERSONA" FromRole="TBL_PERSONA" ToRole="TBL_INCIDENTE" />
-          <NavigationProperty Name="TBL_USUARIO" Relationship="Self.FK_TBL_USUARIO_TBL_PERSONA" FromRole="TBL_PERSONA" ToRole="TBL_USUARIO" />
+          <NavigationProperty Name="TBL_USUARIO" Relationship="PL_PracticaModel.FK_TBL_USUARIO_TBL_PERSONA" FromRole="TBL_PERSONA" ToRole="TBL_USUARIO" />
         </EntityType>
         <EntityType Name="TBL_PRIORIDAD">
           <Key>
@@ -358,22 +375,7 @@
           <Property Name="rol_descripcion" Type="String" MaxLength="100" FixedLength="false" Unicode="false" Nullable="false" />
           <Property Name="rol_add" Type="DateTime" Nullable="false" Precision="3" />
           <Property Name="rol_status" Type="String" MaxLength="1" FixedLength="true" Unicode="false" Nullable="false" />
-          <NavigationProperty Name="TBL_USUARIO" Relationship="Self.FK_TBL_USUARIO_TBL_ROL" FromRole="TBL_ROL" ToRole="TBL_USUARIO" />
-        </EntityType>
-        <EntityType Name="TBL_USUARIO">
-          <Key>
-            <PropertyRef Name="usu_id" />
-          </Key>
-          <Property Name="usu_id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="rol_id" Type="Int32" Nullable="false" />
-          <Property Name="usu_login" Type="String" MaxLength="100" FixedLength="false" Unicode="false" Nullable="false" />
-          <Property Name="usu_password" Type="String" MaxLength="100" FixedLength="false" Unicode="false" Nullable="false" />
-          <Property Name="usu_email" Type="String" MaxLength="100" FixedLength="false" Unicode="false" Nullable="false" />
-          <Property Name="usu_add" Type="DateTime" Nullable="false" Precision="3" />
-          <Property Name="usu_status" Type="String" MaxLength="1" FixedLength="true" Unicode="false" Nullable="false" />
-          <Property Name="per_id" Type="Int32" Nullable="false" />
-          <NavigationProperty Name="TBL_PERSONA" Relationship="Self.FK_TBL_USUARIO_TBL_PERSONA" FromRole="TBL_USUARIO" ToRole="TBL_PERSONA" />
-          <NavigationProperty Name="TBL_ROL" Relationship="Self.FK_TBL_USUARIO_TBL_ROL" FromRole="TBL_USUARIO" ToRole="TBL_ROL" />
+          <NavigationProperty Name="TBL_USUARIO" Relationship="PL_PracticaModel.FK_TBL_USUARIO_TBL_ROL" FromRole="TBL_ROL" ToRole="TBL_USUARIO" />
         </EntityType>
         <Association Name="FK_TBL_PERSONA_TBL_DEPARTAMENTO">
           <End Role="TBL_DEPARTAMENTO" Type="Self.TBL_DEPARTAMENTO" Multiplicity="1" />
@@ -447,30 +449,6 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK_TBL_USUARIO_TBL_PERSONA">
-          <End Role="TBL_PERSONA" Type="Self.TBL_PERSONA" Multiplicity="1" />
-          <End Role="TBL_USUARIO" Type="Self.TBL_USUARIO" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="TBL_PERSONA">
-              <PropertyRef Name="per_id" />
-            </Principal>
-            <Dependent Role="TBL_USUARIO">
-              <PropertyRef Name="per_id" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_TBL_USUARIO_TBL_ROL">
-          <End Role="TBL_ROL" Type="Self.TBL_ROL" Multiplicity="1" />
-          <End Role="TBL_USUARIO" Type="Self.TBL_USUARIO" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="TBL_ROL">
-              <PropertyRef Name="rol_id" />
-            </Principal>
-            <Dependent Role="TBL_USUARIO">
-              <PropertyRef Name="rol_id" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
         <EntityContainer Name="PL_PracticaEntities1" annotation:LazyLoadingEnabled="true">
           <EntitySet Name="sysdiagrams" EntityType="Self.sysdiagrams" />
           <EntitySet Name="TBL_DEPARTAMENTO" EntityType="Self.TBL_DEPARTAMENTO" />
@@ -480,7 +458,6 @@
           <EntitySet Name="TBL_PERSONA" EntityType="Self.TBL_PERSONA" />
           <EntitySet Name="TBL_PRIORIDAD" EntityType="Self.TBL_PRIORIDAD" />
           <EntitySet Name="TBL_ROL" EntityType="Self.TBL_ROL" />
-          <EntitySet Name="TBL_USUARIO" EntityType="Self.TBL_USUARIO" />
           <AssociationSet Name="FK_TBL_PERSONA_TBL_DEPARTAMENTO" Association="Self.FK_TBL_PERSONA_TBL_DEPARTAMENTO">
             <End Role="TBL_DEPARTAMENTO" EntitySet="TBL_DEPARTAMENTO" />
             <End Role="TBL_PERSONA" EntitySet="TBL_PERSONA" />
@@ -505,21 +482,76 @@
             <End Role="TBL_INCIDENTE" EntitySet="TBL_INCIDENTE" />
             <End Role="TBL_OBSERVACION" EntitySet="TBL_OBSERVACION" />
           </AssociationSet>
-          <AssociationSet Name="FK_TBL_USUARIO_TBL_PERSONA" Association="Self.FK_TBL_USUARIO_TBL_PERSONA">
+          <FunctionImport Name="Sp_Correo" ReturnType="Collection(String)">
+          <Parameter Name="usuario" Mode="In" Type="String" />
+          </FunctionImport>
+          <FunctionImport Name="Obtener_Claves">
+          <Parameter Name="usuario" Mode="In" Type="String" />
+          </FunctionImport>
+          <FunctionImport Name="SpObtenerCorreo" ReturnType="Collection(String)">
+          <Parameter Name="usu" Mode="In" Type="String" />
+          </FunctionImport>
+          <FunctionImport Name="SpDesencriptar" ReturnType="Collection(PL_PracticaModel.SpDesencriptar_Result)">
+            <Parameter Name="passw" Mode="In" Type="String" />
+            <Parameter Name="nom" Mode="In" Type="String" />
+          </FunctionImport>
+          <EntitySet Name="TBL_USUARIO" EntityType="PL_PracticaModel.TBL_USUARIO" />
+          <AssociationSet Name="FK_TBL_USUARIO_TBL_PERSONA" Association="PL_PracticaModel.FK_TBL_USUARIO_TBL_PERSONA">
             <End Role="TBL_PERSONA" EntitySet="TBL_PERSONA" />
             <End Role="TBL_USUARIO" EntitySet="TBL_USUARIO" />
           </AssociationSet>
-          <AssociationSet Name="FK_TBL_USUARIO_TBL_ROL" Association="Self.FK_TBL_USUARIO_TBL_ROL">
+          <AssociationSet Name="FK_TBL_USUARIO_TBL_ROL" Association="PL_PracticaModel.FK_TBL_USUARIO_TBL_ROL">
             <End Role="TBL_ROL" EntitySet="TBL_ROL" />
             <End Role="TBL_USUARIO" EntitySet="TBL_USUARIO" />
           </AssociationSet>
-          <FunctionImport Name="Sp_Correo" ReturnType="Collection(String)">
-            <Parameter Name="usuario" Mode="In" Type="String" />
-          </FunctionImport>
-          <FunctionImport Name="Obtener_Claves" EntitySet="TBL_USUARIO" ReturnType="Collection(PL_PracticaModel.TBL_USUARIO)">
+          <FunctionImport Name="Sp_EnviarCorreo" ReturnType="Collection(String)">
             <Parameter Name="usuario" Mode="In" Type="String" />
           </FunctionImport>
         </EntityContainer>
+        <ComplexType Name="SpDesencriptar_Result">
+          <Property Type="String" Name="usu_login" Nullable="false" MaxLength="100" />
+          <Property Type="String" Name="Column1" Nullable="true" MaxLength="50" />
+        </ComplexType>
+        <EntityType Name="TBL_USUARIO">
+          <Key>
+            <PropertyRef Name="usu_id" />
+          </Key>
+          <Property Name="usu_id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="rol_id" Type="Int32" Nullable="false" />
+          <Property Name="usu_login" Type="String" Nullable="false" MaxLength="100" FixedLength="false" Unicode="false" />
+          <Property Name="usu_email" Type="String" Nullable="false" MaxLength="100" FixedLength="false" Unicode="false" />
+          <Property Name="usu_add" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="usu_status" Type="String" Nullable="false" MaxLength="1" FixedLength="true" Unicode="false" />
+          <Property Name="per_id" Type="Int32" Nullable="false" />
+          <Property Name="intentos" Type="Int32" />
+          <Property Name="usu_pass" Type="Binary" MaxLength="150" FixedLength="false" />
+          <NavigationProperty Name="TBL_PERSONA" Relationship="PL_PracticaModel.FK_TBL_USUARIO_TBL_PERSONA" FromRole="TBL_USUARIO" ToRole="TBL_PERSONA" />
+          <NavigationProperty Name="TBL_ROL" Relationship="PL_PracticaModel.FK_TBL_USUARIO_TBL_ROL" FromRole="TBL_USUARIO" ToRole="TBL_ROL" />
+        </EntityType>
+        <Association Name="FK_TBL_USUARIO_TBL_PERSONA">
+          <End Type="PL_PracticaModel.TBL_PERSONA" Role="TBL_PERSONA" Multiplicity="1" />
+          <End Type="PL_PracticaModel.TBL_USUARIO" Role="TBL_USUARIO" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="TBL_PERSONA">
+              <PropertyRef Name="per_id" />
+            </Principal>
+            <Dependent Role="TBL_USUARIO">
+              <PropertyRef Name="per_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_TBL_USUARIO_TBL_ROL">
+          <End Type="PL_PracticaModel.TBL_ROL" Role="TBL_ROL" Multiplicity="1" />
+          <End Type="PL_PracticaModel.TBL_USUARIO" Role="TBL_USUARIO" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="TBL_ROL">
+              <PropertyRef Name="rol_id" />
+            </Principal>
+            <Dependent Role="TBL_USUARIO">
+              <PropertyRef Name="rol_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
       </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -625,22 +657,33 @@
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
+          <FunctionImportMapping FunctionImportName="Sp_Correo" FunctionName="PL_PracticaModel.Store.Sp_Correo" />
+          <FunctionImportMapping FunctionImportName="Obtener_Claves" FunctionName="PL_PracticaModel.Store.Sp_Correo" />
+          <FunctionImportMapping FunctionImportName="SpObtenerCorreo" FunctionName="PL_PracticaModel.Store.SpObtenerCorreo" />
+          <FunctionImportMapping FunctionImportName="SpDesencriptar" FunctionName="PL_PracticaModel.Store.SpDesencriptar">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="PL_PracticaModel.SpDesencriptar_Result">
+                <ScalarProperty Name="usu_login" ColumnName="usu_login" />
+                <ScalarProperty Name="Column1" ColumnName="Column1" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
           <EntitySetMapping Name="TBL_USUARIO">
             <EntityTypeMapping TypeName="PL_PracticaModel.TBL_USUARIO">
               <MappingFragment StoreEntitySet="TBL_USUARIO">
-                <ScalarProperty Name="usu_id" ColumnName="usu_id" />
-                <ScalarProperty Name="rol_id" ColumnName="rol_id" />
-                <ScalarProperty Name="usu_login" ColumnName="usu_login" />
-                <ScalarProperty Name="usu_password" ColumnName="usu_password" />
-                <ScalarProperty Name="usu_email" ColumnName="usu_email" />
-                <ScalarProperty Name="usu_add" ColumnName="usu_add" />
-                <ScalarProperty Name="usu_status" ColumnName="usu_status" />
+                <ScalarProperty Name="usu_pass" ColumnName="usu_pass" />
+                <ScalarProperty Name="intentos" ColumnName="intentos" />
                 <ScalarProperty Name="per_id" ColumnName="per_id" />
+                <ScalarProperty Name="usu_status" ColumnName="usu_status" />
+                <ScalarProperty Name="usu_add" ColumnName="usu_add" />
+                <ScalarProperty Name="usu_email" ColumnName="usu_email" />
+                <ScalarProperty Name="usu_login" ColumnName="usu_login" />
+                <ScalarProperty Name="rol_id" ColumnName="rol_id" />
+                <ScalarProperty Name="usu_id" ColumnName="usu_id" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
-          <FunctionImportMapping FunctionImportName="Sp_Correo" FunctionName="PL_PracticaModel.Store.Sp_Correo" />
-          <FunctionImportMapping FunctionImportName="Obtener_Claves" FunctionName="PL_PracticaModel.Store.Sp_Correo" />
+          <FunctionImportMapping FunctionImportName="Sp_EnviarCorreo" FunctionName="PL_PracticaModel.Store.Sp_EnviarCorreo" />
         </EntityContainerMapping>
       </Mapping>
     </edmx:Mappings>

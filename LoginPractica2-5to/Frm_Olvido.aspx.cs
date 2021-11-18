@@ -11,6 +11,8 @@ using System.Threading.Tasks;
 using System.Web;
 using System.Web.UI;
 using System.Web.UI.WebControls;
+using LoginPractica2_5to.Logica;
+
 
 namespace LoginPractica2_5to
 {
@@ -31,24 +33,16 @@ namespace LoginPractica2_5to
                 //string clave;
                 if (!string.IsNullOrEmpty(usuario) && !string.IsNullOrEmpty(email))
                 {
-                    TBL_USUARIO dataUsuario = new TBL_USUARIO();
 
+                    var lista = LNUsuario.ObtenerClave(usuario);
 
+                    // lblres.Text = lista.ToString();
+                    ClientScript.RegisterStartupScript(this.GetType(), "mensaje", "<script> Swal.fire('Bien', 'Correo Enviado Correctamente','success')</script>");
 
-                    // var taskUserLogin = Task.Run(() => Logica.LNUsuario.getPass(clave));
-                    // taskUserLogin.Wait();
-                    // dataUsuario = taskUserLogin.Result;
+                    EnviarCorreo(email, lista);
+                    LNUsuario.restaurarintentos(txt_usu.Text);
 
-                    //if (dataUsuario != null)
-                    //{
-                    ObtenerClave2(usuario);
-                    EnviarCorreo(email, usuario);
-                    ClientScript.RegisterStartupScript(this.GetType(), "mensaje", "<script> Swal.fire('Buen Trabajo', 'Correo Enviado Correctamente','success')</script>");
-
-
-
-                    //}
-
+                    Response.Redirect("~/Frm_Login.aspx");
 
                 }
                 else
@@ -74,7 +68,7 @@ namespace LoginPractica2_5to
             string emaildestino = correo;
             string contra = "1726384090";
 
-            MailMessage oMailMessage = new MailMessage(emailorigen, emaildestino, "RECUPERACION CLAVE", clave);
+            MailMessage oMailMessage = new MailMessage(emailorigen, emaildestino, "RECUPERACION CLAVE", "ESTIMADO USUARIO LE RECORDAMOS QUE SU CONTRASEÑA ES:" + clave);
             oMailMessage.IsBodyHtml = true;
             SmtpClient oSmtpClient = new SmtpClient("smtp.gmail.com");
             oSmtpClient.EnableSsl = true;
@@ -119,7 +113,7 @@ namespace LoginPractica2_5to
             SqlParameter sp3 = new SqlParameter();
             SqlParameter sp4 = new SqlParameter();
 
-          con = new SqlConnection("Server=192.168.200.23l;Database=PL_Practica;Uid=andy;Pwd=1515");
+            con = new SqlConnection("Server=192.168.200.23l;Database=PL_Practica;Uid=andy;Pwd=1515");
 
             //con = new SqlConnection("server = (192.168.200.23); database = PL_Practica uid = andy; pwd = 1515");
             cmd.Parameters.Add("@usuario", SqlDbType.VarChar).Value = clave;

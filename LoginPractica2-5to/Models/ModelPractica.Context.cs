@@ -46,22 +46,44 @@ namespace LoginPractica2_5to.Models
             return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<string>("Sp_Correo", usuarioParameter);
         }
     
-        public virtual ObjectResult<TBL_USUARIO> Obtener_Claves(string usuario)
+        public virtual int Obtener_Claves(string usuario)
         {
             var usuarioParameter = usuario != null ?
                 new ObjectParameter("usuario", usuario) :
                 new ObjectParameter("usuario", typeof(string));
     
-            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<TBL_USUARIO>("Obtener_Claves", usuarioParameter);
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("Obtener_Claves", usuarioParameter);
         }
     
-        public virtual ObjectResult<TBL_USUARIO> Obtener_Claves(string usuario, MergeOption mergeOption)
+        public virtual ObjectResult<string> SpObtenerCorreo(string usu)
+        {
+            var usuParameter = usu != null ?
+                new ObjectParameter("usu", usu) :
+                new ObjectParameter("usu", typeof(string));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<string>("SpObtenerCorreo", usuParameter);
+        }
+    
+        public virtual ObjectResult<SpDesencriptar_Result> SpDesencriptar(string passw, string nom)
+        {
+            var passwParameter = passw != null ?
+                new ObjectParameter("passw", passw) :
+                new ObjectParameter("passw", typeof(string));
+    
+            var nomParameter = nom != null ?
+                new ObjectParameter("nom", nom) :
+                new ObjectParameter("nom", typeof(string));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<SpDesencriptar_Result>("SpDesencriptar", passwParameter, nomParameter);
+        }
+    
+        public virtual ObjectResult<string> Sp_EnviarCorreo(string usuario)
         {
             var usuarioParameter = usuario != null ?
                 new ObjectParameter("usuario", usuario) :
                 new ObjectParameter("usuario", typeof(string));
     
-            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<TBL_USUARIO>("Obtener_Claves", mergeOption, usuarioParameter);
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<string>("Sp_EnviarCorreo", usuarioParameter);
         }
     }
 }

@@ -13,15 +13,15 @@
         <EntityTypeShape EntityType="PL_PracticaModel.TBL_PERSONA" Width="1.5" PointX="3" PointY="4.25" IsExpanded="true" />
         <EntityTypeShape EntityType="PL_PracticaModel.TBL_PRIORIDAD" Width="1.5" PointX="3" PointY="9.5" IsExpanded="true" />
         <EntityTypeShape EntityType="PL_PracticaModel.TBL_ROL" Width="1.5" PointX="6" PointY="1.125" IsExpanded="true" />
-        <EntityTypeShape EntityType="PL_PracticaModel.TBL_USUARIO" Width="1.5" PointX="8.25" PointY="4.625" IsExpanded="true" />
         <AssociationConnector Association="PL_PracticaModel.FK_TBL_PERSONA_TBL_DEPARTAMENTO" ManuallyRouted="false" />
         <AssociationConnector Association="PL_PracticaModel.FK_TBL_INCIDENTE_TBL_ESTADO" ManuallyRouted="false" />
         <AssociationConnector Association="PL_PracticaModel.FK_TBL_INCIDENTE_TBL_PERSONA" ManuallyRouted="false" />
         <AssociationConnector Association="PL_PracticaModel.FK_TBL_INCIDENTE_TBL_PRIORIDAD" ManuallyRouted="false" />
         <AssociationConnector Association="PL_PracticaModel.FK_TBL_OBSERVACION_TBL_INCIDENTE" ManuallyRouted="false" />
         <AssociationConnector Association="PL_PracticaModel.FK_TBL_OBSERVACION_TBL_INCIDENTE1" ManuallyRouted="false" />
-        <AssociationConnector Association="PL_PracticaModel.FK_TBL_USUARIO_TBL_PERSONA" ManuallyRouted="false" />
-        <AssociationConnector Association="PL_PracticaModel.FK_TBL_USUARIO_TBL_ROL" ManuallyRouted="false" />
+        <EntityTypeShape EntityType="PL_PracticaModel.TBL_USUARIO" Width="1.5" PointX="10.25" PointY="5" />
+        <AssociationConnector Association="PL_PracticaModel.FK_TBL_USUARIO_TBL_PERSONA" />
+        <AssociationConnector Association="PL_PracticaModel.FK_TBL_USUARIO_TBL_ROL" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

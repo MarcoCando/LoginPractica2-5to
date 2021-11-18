@@ -1,4 +1,5 @@
 ﻿using LoginPractica2_5to.Models;
+using LoginPractica2_5to.Logica;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -29,13 +30,16 @@ namespace LoginPractica2_5to
                 {
                     TBL_USUARIO dataUsuario = new TBL_USUARIO();
 
-                    var taskUserLogin = Task.Run(() => Logica.LNUsuario.getUserXLogin(usuario, clave));
+                    var taskUserLogin = Task.Run(() => LNUsuario.getUserXLogin(usuario, clave));
                     taskUserLogin.Wait();
                     dataUsuario = taskUserLogin.Result;
 
+                    //var login = LNUsuario.getLoginXEncrypt(clave, usuario).ToList();
                     if (dataUsuario != null)
+                   // if (login != null)
+
                     {
-                        Response.Redirect("~/Frm_Inicio.aspx");
+                        //Response.Redirect("~/Frm_Inicio.aspx");
                         ClientScript.RegisterStartupScript(this.GetType(), "mensaje", "<script> Swal.fire('Buen Trabajo', 'Bienvenido','success')</script>");
 
                     }
@@ -51,6 +55,11 @@ namespace LoginPractica2_5to
                         //    btnIngresar.Visible = false;
                         //    btnOlvido.Visible = true;
                         //}
+                        LNUsuario.restarintentos(txt_usu.Text);
+
+                        txt_pass.Text = "";
+                        txt_usu.Text = "";
+
                         ClientScript.RegisterStartupScript(this.GetType(), "mensaje", "<script> Swal.fire('Error', 'Usuario o Contraseña Incorrecta','error')</script>");
 
                     }
@@ -71,10 +80,23 @@ namespace LoginPractica2_5to
             }
         }
 
+        protected void txt_usu_TextChanged(object sender, EventArgs e)
+        {
+            var lista = LNUsuario.Intentos(txt_usu.Text);
+            if (lista.intentos <= 0)
+            {
+                ClientScript.RegisterStartupScript(this.GetType(), "mensaje", "<script> Swal.fire('Error', 'SOBREPASO EL LIMITE RESTAURE SU CUENTA','error')</script>");
+                btnIngresar.Visible = false;
+                btnOlvido.Visible = true;
+                txt_usu.Visible = false;
+                txt_pass.Visible = false;
+
+            }
+        }
+
         protected void btnOlvido_Click(object sender, EventArgs e)
         {
             Response.Redirect("~/Frm_Olvido.aspx");
-
         }
     }
 }

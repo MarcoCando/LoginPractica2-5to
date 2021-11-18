@@ -23,7 +23,7 @@
                                                 <table style="width: 100%">
 
                                                     <div class="form-group">
-                                                        <asp:TextBox type="text" ID="txt_usu" CssClass="form-control form-control-user" placeholder="Ingrese Usuario" runat="server">
+                                                        <asp:TextBox type="text" ID="txt_usu" OnTextChanged="txt_usu_TextChanged" CssClass="form-control form-control-user" placeholder="Ingrese Usuario" runat="server">
 
                                                         </asp:TextBox>
                                                     </div>
@@ -36,7 +36,7 @@
                                                         </div>
                                                     </div>
                                                     <asp:Button ID="btnIngresar" CssClass="btn btn-success btn-user btn-block" runat="server" Text="Ingresar" OnClick="btnIngresar_Click" />
-                                                    <asp:Button ID="btnOlvido" CssClass="btn btn-facebook btn-user btn-block" runat="server" Text="Restaurar Contraseña" Visible="true" OnClick="btnOlvido_Click" />
+                                                    <asp:Button ID="btnOlvido" CssClass="btn btn-facebook btn-user btn-block" runat="server" Text="Restaurar Contraseña" Visible="false" OnClick="btnOlvido_Click" />
 
 
                                                 </table>

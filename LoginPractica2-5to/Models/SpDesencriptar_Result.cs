@@ -10,21 +10,10 @@
 namespace LoginPractica2_5to.Models
 {
     using System;
-    using System.Collections.Generic;
     
-    public partial class TBL_USUARIO
+    public partial class SpDesencriptar_Result
     {
-        public int usu_id { get; set; }
-        public int rol_id { get; set; }
         public string usu_login { get; set; }
-        public string usu_email { get; set; }
-        public System.DateTime usu_add { get; set; }
-        public string usu_status { get; set; }
-        public int per_id { get; set; }
-        public Nullable<int> intentos { get; set; }
-        public byte[] usu_pass { get; set; }
-    
-        public virtual TBL_PERSONA TBL_PERSONA { get; set; }
-        public virtual TBL_ROL TBL_ROL { get; set; }
+        public string Column1 { get; set; }
     }
 }
