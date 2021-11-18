@@ -11,8 +11,18 @@ namespace LoginPractica2_5to
     {
         protected void Page_Load(object sender, EventArgs e)
         {
-            ClientScript.RegisterStartupScript(this.GetType(), "mensaje", "<script> Swal.fire('Buen Trabajo', 'Bienvenido al Sistema','success')</script>");
+            try
+            {
+                if (!Page.IsPostBack)
+                {
+                    ClientScript.RegisterStartupScript(this.GetType(), "mensaje", "<script> Swal.fire('Buen Trabajo', 'Bienvenido','success')</script>");
 
+                }
+            }
+            catch (Exception ex)
+            {
+                ClientScript.RegisterStartupScript(this.GetType(), "mensaje", "<script> Swal.fire('Error', 'Error','danger')</script>");
+            }
         }
     }
 }

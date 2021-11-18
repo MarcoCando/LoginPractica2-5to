@@ -7,6 +7,8 @@ using System.Threading.Tasks;
 using System.Web;
 using System.Web.UI;
 using System.Web.UI.WebControls;
+using System.Text;
+using System.Collections;
 
 namespace LoginPractica2_5to
 {
@@ -16,7 +18,6 @@ namespace LoginPractica2_5to
         {
 
         }
-        private int intentos = 0;
 
         protected void btnIngresar_Click(object sender, EventArgs e)
         {
@@ -24,37 +25,23 @@ namespace LoginPractica2_5to
             {
 
                 string usuario = txt_usu.Text.TrimStart().TrimEnd();
-                string clave = txt_pass.Text;
+                string cla = txt_pass.Text;
 
-                if (!string.IsNullOrEmpty(usuario) && !string.IsNullOrEmpty(clave))
+                if (!string.IsNullOrEmpty(usuario) && !string.IsNullOrEmpty(cla))
                 {
-                    TBL_USUARIO dataUsuario = new TBL_USUARIO();
 
-                    var taskUserLogin = Task.Run(() => LNUsuario.getUserXLogin(usuario, clave));
-                    taskUserLogin.Wait();
-                    dataUsuario = taskUserLogin.Result;
+                    //SE DESENCRIPTA LA CONTRASEÑA PARA EL LOGIN
+                    var login = LNUsuario.DesencriptarxLogin(usuario, cla);
 
-                    //var login = LNUsuario.getLoginXEncrypt(clave, usuario).ToList();
-                    if (dataUsuario != null)
-                   // if (login != null)
-
+                    if (login != null)
                     {
-                        //Response.Redirect("~/Frm_Inicio.aspx");
                         ClientScript.RegisterStartupScript(this.GetType(), "mensaje", "<script> Swal.fire('Buen Trabajo', 'Bienvenido','success')</script>");
+                        Response.Redirect("~/Frm_Inicio.aspx");
 
                     }
                     else
                     {
-                        //if (intentos == 3)
-                        //{
-                        //    txt_usu.Text = "";
-                        //    txt_pass.Text = "";
-                        //    intentos++;
-
-                        //    ClientScript.RegisterStartupScript(this.GetType(), "mensaje", "<script> Swal.fire('Error', 'SOBREPASO EL LIMITE','error')</script>");
-                        //    btnIngresar.Visible = false;
-                        //    btnOlvido.Visible = true;
-                        //}
+                        //SI EL USUARIO INGRESA MAL LA CLAVE SE RESETEA LOS INTENTOS
                         LNUsuario.restarintentos(txt_usu.Text);
 
                         txt_pass.Text = "";
@@ -82,16 +69,26 @@ namespace LoginPractica2_5to
 
         protected void txt_usu_TextChanged(object sender, EventArgs e)
         {
-            var lista = LNUsuario.Intentos(txt_usu.Text);
-            if (lista.intentos <= 0)
+            try
             {
-                ClientScript.RegisterStartupScript(this.GetType(), "mensaje", "<script> Swal.fire('Error', 'SOBREPASO EL LIMITE RESTAURE SU CUENTA','error')</script>");
-                btnIngresar.Visible = false;
-                btnOlvido.Visible = true;
-                txt_usu.Visible = false;
-                txt_pass.Visible = false;
+                //VERIFICA SI INGRESO LOS 3 INTENTOS NO TE PERMITIRA SEGUIR LOGEANDOTE
+                var lista = LNUsuario.Intentos(txt_usu.Text);
+                if (lista.intentos <= 0)
+                {
+                    ClientScript.RegisterStartupScript(this.GetType(), "mensaje", "<script> Swal.fire('Error', 'SOBREPASO EL LIMITE RESTAURE SU CUENTA','error')</script>");
+                    btnIngresar.Visible = false;
+                    btnOlvido.Visible = true;
+                    txt_usu.Visible = false;
+                    txt_pass.Visible = false;
 
+                }
             }
+            catch (Exception)
+            {
+
+                throw;
+            }
+
         }
 
         protected void btnOlvido_Click(object sender, EventArgs e)

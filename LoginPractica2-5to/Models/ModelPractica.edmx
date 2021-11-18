@@ -218,11 +218,21 @@
         <Function Name="Sp_EnviarCorreo" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
           <Parameter Name="usuario" Type="varchar" Mode="In" />
         </Function>
+        <Function Name="Sp_EnviarCorreoClave" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="usu" Type="varchar" Mode="In" />
+        </Function>
         <Function Name="SpDesencriptar" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
           <Parameter Name="passw" Type="varchar" Mode="In" />
           <Parameter Name="nom" Type="varchar" Mode="In" />
         </Function>
+        <Function Name="SpDesencriptarLogin" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="passw" Type="varchar" Mode="In" />
+          <Parameter Name="nom" Type="varchar" Mode="In" />
+        </Function>
         <Function Name="SpObtenerCorreo" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="usu" Type="varchar" Mode="In" />
+        </Function>
+        <Function Name="SpObtenerCorreoUsu" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
           <Parameter Name="usu" Type="varchar" Mode="In" />
         </Function>
         <EntityContainer Name="PL_PracticaModelStoreContainer">
@@ -505,7 +515,17 @@
             <End Role="TBL_USUARIO" EntitySet="TBL_USUARIO" />
           </AssociationSet>
           <FunctionImport Name="Sp_EnviarCorreo" ReturnType="Collection(String)">
-            <Parameter Name="usuario" Mode="In" Type="String" />
+          <Parameter Name="usuario" Mode="In" Type="String" />
+          </FunctionImport>
+          <FunctionImport Name="SpDesencriptarLogin" ReturnType="Collection(PL_PracticaModel.SpDesencriptarLogin_Result)">
+            <Parameter Name="passw" Mode="In" Type="String" />
+            <Parameter Name="nom" Mode="In" Type="String" />
+          </FunctionImport>
+          <FunctionImport Name="Sp_EnviarCorreoClave" ReturnType="Collection(String)">
+            <Parameter Name="usu" Mode="In" Type="String" />
+          </FunctionImport>
+          <FunctionImport Name="SpObtenerCorreoUsu" ReturnType="Collection(String)">
+            <Parameter Name="usu" Mode="In" Type="String" />
           </FunctionImport>
         </EntityContainer>
         <ComplexType Name="SpDesencriptar_Result">
@@ -552,6 +572,10 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <ComplexType Name="SpDesencriptarLogin_Result">
+          <Property Type="String" Name="usu_login" Nullable="false" MaxLength="100" />
+          <Property Type="String" Name="clave" Nullable="true" MaxLength="50" />
+        </ComplexType>
       </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -684,6 +708,16 @@
             </EntityTypeMapping>
           </EntitySetMapping>
           <FunctionImportMapping FunctionImportName="Sp_EnviarCorreo" FunctionName="PL_PracticaModel.Store.Sp_EnviarCorreo" />
+          <FunctionImportMapping FunctionImportName="SpDesencriptarLogin" FunctionName="PL_PracticaModel.Store.SpDesencriptarLogin">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="PL_PracticaModel.SpDesencriptarLogin_Result">
+                <ScalarProperty Name="usu_login" ColumnName="usu_login" />
+                <ScalarProperty Name="clave" ColumnName="clave" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+          <FunctionImportMapping FunctionImportName="Sp_EnviarCorreoClave" FunctionName="PL_PracticaModel.Store.Sp_EnviarCorreoClave" />
+          <FunctionImportMapping FunctionImportName="SpObtenerCorreoUsu" FunctionName="PL_PracticaModel.Store.SpObtenerCorreoUsu" />
         </EntityContainerMapping>
       </Mapping>
     </edmx:Mappings>

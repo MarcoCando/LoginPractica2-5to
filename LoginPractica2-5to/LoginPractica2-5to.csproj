@@ -2140,6 +2140,9 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>ModelPractica.edmx</DependentUpon>
     </Compile>
+    <Compile Include="Models\SpDesencriptarLogin_Result.cs">
+      <DependentUpon>ModelPractica.tt</DependentUpon>
+    </Compile>
     <Compile Include="Models\SpDesencriptar_Result.cs">
       <DependentUpon>ModelPractica.tt</DependentUpon>
     </Compile>

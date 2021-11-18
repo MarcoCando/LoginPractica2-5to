@@ -29,19 +29,16 @@ namespace LoginPractica2_5to
             {
 
                 string usuario = txt_usu.Text.TrimStart().TrimEnd();
-                string email = txt_email.Text;
-                //string clave;
-                if (!string.IsNullOrEmpty(usuario) && !string.IsNullOrEmpty(email))
+
+                if (!string.IsNullOrEmpty(usuario))
                 {
 
-                    var lista = LNUsuario.ObtenerClave(usuario);
-
-                    // lblres.Text = lista.ToString();
-                    ClientScript.RegisterStartupScript(this.GetType(), "mensaje", "<script> Swal.fire('Bien', 'Correo Enviado Correctamente','success')</script>");
-
-                    EnviarCorreo(email, lista);
+                    var lista = LNUsuario.ObtenerCorreoxUsu(usuario); //OBTIENE EL CORREO DEL USUARIO MEDIANTE LA BASE DE DATOS
+                    var email = LNUsuario.EnviarCorreosXUsuario(usuario); //ENVIA CORREO CON LA CONTRASEÑA DESENCRIPTADA 
                     LNUsuario.restaurarintentos(txt_usu.Text);
-
+                    EnviarCorreo(lista, email);
+                    ClientScript.RegisterStartupScript(this.GetType(), "mensaje", "<script> Swal.fire('Bien', 'Correo Enviado Correctamente','success')</script>");
+                    Response.Write("<script language=javascript>alert('ERROR');</script>");
                     Response.Redirect("~/Frm_Login.aspx");
 
                 }
@@ -56,7 +53,7 @@ namespace LoginPractica2_5to
             catch (Exception ex)
             {
 
-                ClientScript.RegisterStartupScript(this.GetType(), "mensaje", "<script> Swal.fire('Error', 'FALLO CONEXION BD','error')</script>");
+                ClientScript.RegisterStartupScript(this.GetType(), "mensaje", "<script> Swal.fire('Error', 'Usuario Inexistente intente de Nuevo','error')</script>");
             }
         }
 
@@ -80,49 +77,6 @@ namespace LoginPractica2_5to
 
         }
 
-        //public void ObtenerClave(string clave)
-        //{
-
-        //    var connectionstring = ConfigurationManager.ConnectionStrings["defaultConnection"].ConnectionString;
-        //    var pass = clave;
-
-        //    using (SqlConnection sql = new SqlConnection(connectionstring))
-        //    {
-        //        using (SqlCommand cmd = new SqlCommand("Sp_Correo", sql))
-        //        {
-        //            cmd.CommandType = CommandType.StoredProcedure;
-        //            cmd.Parameters.Add(new SqlParameter("@usuario", pass));
-        //            DataTable dt = new DataTable();
-        //            SqlDataAdapter da = new SqlDataAdapter(cmd);
-        //            sql.Open();
-        //            da.Fill(dt);
-        //        }
-        //    }
-
-
-        //}
-
-        public void ObtenerClave2(string clave)
-        {
-            DataSet ds = new DataSet();
-            SqlConnection con;
-            //Here we declare the parameter which we have to use in our application  
-            SqlCommand cmd = new SqlCommand();
-            SqlParameter sp1 = new SqlParameter();
-            SqlParameter sp2 = new SqlParameter();
-            SqlParameter sp3 = new SqlParameter();
-            SqlParameter sp4 = new SqlParameter();
-
-            con = new SqlConnection("Server=192.168.200.23l;Database=PL_Practica;Uid=andy;Pwd=1515");
-
-            //con = new SqlConnection("server = (192.168.200.23); database = PL_Practica uid = andy; pwd = 1515");
-            cmd.Parameters.Add("@usuario", SqlDbType.VarChar).Value = clave;
-            cmd = new SqlCommand("Sp_Correo", con);
-            cmd.CommandType = CommandType.StoredProcedure;
-            con.Open();
-            cmd.ExecuteNonQuery();
-            con.Close();
-        }
 
 
     }

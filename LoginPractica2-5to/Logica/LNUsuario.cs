@@ -14,34 +14,6 @@ namespace LoginPractica2_5to.Logica
         //INSTANCIAR DATOS
         private static PL_PracticaEntities1 dc = new PL_PracticaEntities1();
 
-
-        //public static List<SpDesencriptar_Result> getLoginXEncrypt(string nombre, string clave)
-        //{
-        //    List<SpDesencriptar_Result> ced;
-
-        //    using (var context = new PL_PracticaEntities1())
-        //    {
-        //        ced = context.SpDesencriptar(nombre.TrimStart().TrimEnd(), clave.TrimStart().TrimEnd()).ToList();
-        //    }
-        //    ced.ToString();
-        //    return ced;
-        //}
-
-        //public static List<SpDesencriptar_Result> getLoginXDesencrypt(string nombre, string clave)
-        //{
-        //    List<SpDesencriptar_Result> usu;
-
-        //    using (var context = new PL_PracticaEntities1())
-        //    {
-        //        usu = context.SpDesencriptar(nombre,clave).ToList();
-        //    }
-
-        //   usu.ToString();
-
-        //    return usu;
-        //}
-       
-
         public static async Task<List<TBL_USUARIO>> getAllUsers()
         {
             try
@@ -105,31 +77,56 @@ namespace LoginPractica2_5to.Logica
 
         }
 
-        public static string ObtenerClave(string usuario)
+        public static string ObtenerCorreos(string usuario)
         {
             string usu;
 
             using (var context = new PL_PracticaEntities1())
             {
-                usu = context.SpObtenerCorreo(usuario).FirstOrDefault();
+                usu = context.SpObtenerCorreoUsu(usuario).FirstOrDefault();
             }
 
 
             return usu;
         }
-        public static string EnviarCorreo(string usuario)
+        public static string EnviarCorreos(string usuario)
         {
             string usu;
 
             using (var context = new PL_PracticaEntities1())
             {
-                usu = context.SpObtenerCorreo(usuario).FirstOrDefault();
+                usu = context.Sp_EnviarCorreoClave(usuario).FirstOrDefault();
             }
 
 
             return usu;
         }
+        public static string EnviarCorreosXUsuario(string usuario)
+        {
+            string intento;
+            using (var context = new PL_PracticaEntities1())
+            {
+                var lista = context.Sp_EnviarCorreoClave(usuario);
+                intento = lista.FirstOrDefault();
+            }
 
+            return intento;
+
+        }
+
+        public static string ObtenerCorreoxUsu(string usuario)
+        {
+            string usu;
+
+            using (var context = new PL_PracticaEntities1())
+            {
+               var lista = context.SpObtenerCorreoUsu(usuario);
+                usu = lista.FirstOrDefault();
+            }
+
+
+            return usu;
+        }
 
         public static TBL_USUARIO Intentos(string usuario)
         {
@@ -171,7 +168,30 @@ namespace LoginPractica2_5to.Logica
                 context.SaveChanges();
             }
         }
+        public static SpDesencriptar_Result DesencriptarLogin(string usuario, string clave)
+        {
+            SpDesencriptar_Result intento;
+            using (var context = new PL_PracticaEntities1())
+            {
+                var lista = context.SpDesencriptar(clave, usuario);
+                intento = lista.FirstOrDefault();
+            }
 
+            return intento;
+
+        }
+        public static SpDesencriptarLogin_Result DesencriptarxLogin(string usuario, string clave)
+        {
+            SpDesencriptarLogin_Result intento;
+            using (var context = new PL_PracticaEntities1())
+            {
+                var lista = context.SpDesencriptarLogin(clave, usuario);
+                intento = lista.FirstOrDefault();
+            }
+
+            return intento;
+
+        }
 
 
     }

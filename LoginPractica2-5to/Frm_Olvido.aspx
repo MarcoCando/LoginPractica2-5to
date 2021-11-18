@@ -19,16 +19,18 @@
                                     <div class="p-5">
                                         <div class="text-center">
                                             <h1 class="h4 text-gray-900 mb-2">Olvidaste tu Contraseña</h1>
-                                            <p class="mb-4">Ingresa porfavor tu Correo Electrónico!</p>
+                                            <p class="mb-4">Ingresa porfavor tu Usuario!</p>
+                                            <p class="mb-4">Una vez validado tu Usuario regresaras al login!</p>
+
                                         </div>
                                         <form class="user">
                                             <div class="form-group">
-                                                <asp:TextBox ID="txt_email" type="email" runat="server" Visible="false" CssClass="form-control form-control-user"  placeholder="Ingrese su Email"></asp:TextBox>
-                                                
+                                                <asp:TextBox ID="txt_email" type="email" runat="server" Visible="false" CssClass="form-control form-control-user" placeholder="Ingrese su Email"></asp:TextBox>
+
                                             </div>
-                                             <div class="form-group">
+                                            <div class="form-group">
                                                 <asp:TextBox ID="txt_usu" type="text" runat="server" CssClass="form-control form-control-user" placeholder="Ingrese su Usuario"></asp:TextBox>
-                                                
+
                                             </div>
 
                                             <asp:Button ID="Button1" CssClass="btn btn-facebook" runat="server" Text="Enviar Correo" OnClick="Button1_Click" />

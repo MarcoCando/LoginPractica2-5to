@@ -85,5 +85,36 @@ namespace LoginPractica2_5to.Models
     
             return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<string>("Sp_EnviarCorreo", usuarioParameter);
         }
+    
+        public virtual ObjectResult<SpDesencriptarLogin_Result> SpDesencriptarLogin(string passw, string nom)
+        {
+            var passwParameter = passw != null ?
+                new ObjectParameter("passw", passw) :
+                new ObjectParameter("passw", typeof(string));
+    
+            var nomParameter = nom != null ?
+                new ObjectParameter("nom", nom) :
+                new ObjectParameter("nom", typeof(string));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<SpDesencriptarLogin_Result>("SpDesencriptarLogin", passwParameter, nomParameter);
+        }
+    
+        public virtual ObjectResult<string> Sp_EnviarCorreoClave(string usu)
+        {
+            var usuParameter = usu != null ?
+                new ObjectParameter("usu", usu) :
+                new ObjectParameter("usu", typeof(string));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<string>("Sp_EnviarCorreoClave", usuParameter);
+        }
+    
+        public virtual ObjectResult<string> SpObtenerCorreoUsu(string usu)
+        {
+            var usuParameter = usu != null ?
+                new ObjectParameter("usu", usu) :
+                new ObjectParameter("usu", typeof(string));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<string>("SpObtenerCorreoUsu", usuParameter);
+        }
     }
 }
