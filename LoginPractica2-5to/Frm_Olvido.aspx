@@ -1,6 +1,7 @@
 ﻿<%@ Page Title="" Language="C#" MasterPageFile="~/Login.Master" AutoEventWireup="true" CodeBehind="Frm_Olvido.aspx.cs" Inherits="LoginPractica2_5to.Frm_Olvido" %>
 
 <asp:Content ID="Content1" ContentPlaceHolderID="head" runat="server">
+    <title>Olvido</title>
 </asp:Content>
 <asp:Content ID="Content2" ContentPlaceHolderID="ContentPlaceHolder1" runat="server">
     <contenttemplate>
@@ -23,7 +24,8 @@
                                             <p class="mb-4">Una vez validado tu Usuario regresaras al login!</p>
 
                                         </div>
-                                        <form class="user">
+                                        <table style="width: 100%">
+                                        
                                             <div class="form-group">
                                                 <asp:TextBox ID="txt_email" type="email" runat="server" Visible="false" CssClass="form-control form-control-user" placeholder="Ingrese su Email"></asp:TextBox>
 
@@ -32,9 +34,9 @@
                                                 <asp:TextBox ID="txt_usu" type="text" runat="server" CssClass="form-control form-control-user" placeholder="Ingrese su Usuario"></asp:TextBox>
 
                                             </div>
+                                            <asp:Button ID="Button1" CssClass="btn btn-facebook btn-block" runat="server" Text="Enviar Correo" OnClick="Button1_Click" />
 
-                                            <asp:Button ID="Button1" CssClass="btn btn-facebook" runat="server" Text="Enviar Correo" OnClick="Button1_Click" />
-                                        </form>
+                                            </table>
                                         <hr>
                                     </div>
                                 </div>

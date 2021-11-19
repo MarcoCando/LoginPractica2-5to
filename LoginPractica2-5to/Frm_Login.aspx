@@ -1,5 +1,6 @@
 ﻿<%@ Page Title="" Language="C#" MasterPageFile="~/Login.Master" AutoEventWireup="true" CodeBehind="Frm_Login.aspx.cs" Inherits="LoginPractica2_5to.Frm_Login" %>
 <asp:Content ID="Content1" ContentPlaceHolderID="head" runat="server">
+    <title>LOGIN ATR</title>
 </asp:Content>
 <asp:Content ID="Content2" ContentPlaceHolderID="ContentPlaceHolder1" runat="server">
     <ContentTemplate>
@@ -13,7 +14,7 @@
                             <div class="card o-hidden border-0 shadow-lg my-5">
                                 <div class="card-body p-0">
                                     <div class="row">
-                                        <div class="col-lg-6 d-none d-lg-block bg-login-image"></div>
+                                        <div class="col-lg-6 d-none d-lg-block bg-register-image"></div>
                                         <div class="col-lg-6">
                                             <div class="p-5">
                                                 <div class="text-center">
